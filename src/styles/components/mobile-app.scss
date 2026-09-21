@@ -1,0 +1,102 @@
+.mobile-app {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 95px;
+
+  @media screen and (max-width: 1080px) {
+    flex-direction: column;
+    row-gap: 100px;
+  }
+
+  @media screen and (max-width: 380px) {
+    row-gap: 42px;
+  }
+
+  &__content {
+    max-width: 630px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    row-gap: 40px;
+
+    @media screen and (max-width: 768px) {
+      max-width: 688px;
+    }
+  }
+
+  &-content__title {
+    color: var(--text-dark);
+
+    @media screen and (max-width: 680px) {
+      max-width: 348px;
+    }
+  }
+
+  &-content__description {
+    @media screen and (max-width: 680px) {
+      max-width: 348px;
+    }
+  }
+
+  &-content__btns {
+    display: flex;
+    column-gap: 20px;
+    margin-bottom: 3px;
+
+    @media screen and (max-width: 768px) {
+      margin-bottom: -2px;
+    }
+
+    @media screen and (max-width: 680px) {
+      flex-direction: column;
+      row-gap: 20px;
+    }
+  }
+
+  &-content-btns-btn {
+    width: 200px;
+    height: 64px;
+    display: flex;
+    column-gap: 8px;
+    padding: 12px 20px;
+    border-radius: 100px;
+    border: 1px solid var(--border-dark);
+    background: transparent;
+    color: var(--text-dark);
+    transition:
+      background var(--transition-duration) ease-in-out,
+      color var(--transition-duration) ease-in-out;
+
+    &__icon svg {
+      fill: var(--text-dark);
+      transition: fill var(--transition-duration) ease-in-out;
+    }
+
+    &-text__description {
+      font-size: 10px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 140%; /* 14px */
+    }
+
+    &-text__title {
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 150%; /* 24px */
+    }
+
+    @media screen and (hover: hover) {
+      &:hover {
+        background: var(--background-container);
+        color: var(--text-light);
+        cursor: pointer;
+
+        & .mobile-app-content-btns-btn__icon svg {
+          fill: var(--text-light);
+        }
+      }
+    }
+  }
+}
