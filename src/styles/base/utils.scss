@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: var(--width-container);
+  margin: 0 auto;
+  padding: 20px var(--padding-desktop-x) 40px;
+
+  @media screen and (max-width: 768px) {
+    overflow: hidden;
+    position: relative;
+  }
+
+  @media screen and (max-width: 680px) {
+    padding: 20px var(--padding-mobile-x) 40px;
+  }
+}
+
+.first-letter::first-letter {
+  text-transform: uppercase;
+}
+
+.no-scroll-page {
+  @media screen and (max-width: 768px) {
+    overflow: hidden;
+  }
+}

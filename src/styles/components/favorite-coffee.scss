@@ -1,0 +1,160 @@
+.favorites-coffee {
+  &__section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 40px;
+    margin-bottom: 100px;
+  }
+
+  &-section__title {
+    text-align: center;
+    color: var(--text-dark);
+  }
+
+  &-section__slider {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @media screen and (max-width: 680px) {
+      justify-content: center;
+    }
+  }
+
+  &-slider__content {
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 20px;
+    overflow: hidden;
+  }
+
+  &-slider-content__wrapper {
+    display: flex;
+    position: relative;
+    right: -480px;
+    transition: right 0.5s ease-in-out;
+  }
+
+  &-slider-content__item {
+    width: 480px;
+  }
+
+  &-slider-content__img {
+    max-width: 480px;
+  }
+
+  &-slider-content__description {
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 16px;
+    text-align: center;
+    color: var(--text-dark);
+  }
+
+  &-slider-content-description__title {
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 105%;
+  }
+
+  &-slider-content-description__subtitle {
+    @media screen and (max-width: 680px) {
+      max-width: 348px;
+    }
+  }
+
+  &-slider-content-description__price {
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 125%; /* 30px */
+  }
+
+  &-slider__btn {
+    min-width: 60px;
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+    border: 1px solid var(--border-dark);
+    background: transparent;
+    transition: background var(--transition-duration) ease-in-out;
+
+    & svg {
+      stroke: var(--text-dark);
+      transition: stroke var(--transition-duration) ease-in-out;
+    }
+
+    @media screen and (hover: hover) {
+      &:hover {
+        background: var(--border-dark);
+        cursor: pointer;
+
+        & svg {
+          stroke: var(--text-light);
+        }
+      }
+    }
+
+    @media screen and (max-width: 680px) {
+      display: none;
+    }
+
+    &-left {
+      margin-left: 4px;
+
+      @media screen and (max-width: 768px) {
+        margin-left: 0;
+      }
+    }
+
+    &-right {
+      margin-right: 4px;
+
+      @media screen and (max-width: 768px) {
+        margin-right: 0;
+      }
+    }
+  }
+
+  &-section__controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 12px;
+  }
+
+  &-section-controls__line {
+    width: 40px;
+    height: 4px;
+    border-radius: 100px;
+    background: var(--border-light);
+
+    &_active {
+      width: 0%;
+      height: 4px;
+      border-radius: 100px;
+      background: var(--border-dark);
+      animation: fill 5s 0.5s linear;
+    }
+  }
+}
+
+@keyframes fill {
+  from {
+    width: 0%;
+  }
+
+  to {
+    width: 100%;
+  }
+}
