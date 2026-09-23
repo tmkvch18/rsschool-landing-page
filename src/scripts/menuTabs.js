@@ -5,8 +5,6 @@ const HIDDEN_CARD = "menu-cards__card_hidden";
 const MOBILE_BREAKPOINT = 768;
 const CARDS_ON_MOBILE = 4;
 
-/* Image files are numbered across the whole product list: coffee-1..8,
-   tea-9..12, dessert-13..20 — hence the index of the full array. */
 function createCard({ name, description, price, category }, index) {
   return `
     <div class="menu-cards-card menu-cards__card">
