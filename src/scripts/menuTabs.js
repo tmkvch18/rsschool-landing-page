@@ -26,9 +26,13 @@ export default function initMenuTabs() {
 
   if (!cardsContainer || !tabs.length) return;
 
+  const mobileMediaQuery = window.matchMedia(
+    `(max-width: ${MOBILE_BREAKPOINT}px)`,
+  );
+
   function hideExtraCards() {
     const cards = cardsContainer.querySelectorAll(".menu-cards__card");
-    const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+    const isMobile = mobileMediaQuery.matches;
     const hasExtraCards = isMobile && cards.length > CARDS_ON_MOBILE;
 
     cards.forEach((card, index) => {
@@ -43,7 +47,7 @@ export default function initMenuTabs() {
     }
   }
 
-  window.addEventListener("resize", hideExtraCards);
+  mobileMediaQuery.addEventListener("change", hideExtraCards);
 
   function renderCategory(category) {
     cardsContainer.innerHTML = products
