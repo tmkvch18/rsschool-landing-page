@@ -1,13 +1,13 @@
 import products from "../json/products.json";
 
 const ACTIVE_TAB = "menu-tabs__item--active";
-const HIDDEN_CARD = "menu-cards__card_hidden";
+const HIDDEN_CARD = "menu-cards__card--hidden";
 const MOBILE_BREAKPOINT = 768;
 const CARDS_ON_MOBILE = 4;
 
 function createCard({ name, description, price, category }, index) {
   return `
-    <div class="menu-cards-card menu-cards__card">
+    <div class="menu-cards-card menu-cards__card" id="${name}">
       <div class="menu-cards-card__img">
         <img src="./images/${category}-${index + 1}.jpg" alt="${category}">
       </div>
@@ -42,6 +42,8 @@ export default function initMenuTabs() {
       refreshBtn.style.display = hasExtraCards ? "" : "none";
     }
   }
+
+  window.addEventListener("resize", hideExtraCards);
 
   function renderCategory(category) {
     cardsContainer.innerHTML = products

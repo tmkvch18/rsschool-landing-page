@@ -24,11 +24,22 @@ export default function initBurgerMenu() {
 
   burgerNav.addEventListener("click", (event) => {
     const isNavLink = event.target.closest(".header-nav-list__item");
-    const isBackdrop = event.target === burgerNav;
+    const isNavLinkPage = event.target.closest(".header-menu-coffee__link");
+    // const isBackdrop = event.target === burgerNav;
 
-    if (!isNavLink && !isBackdrop) return;
+    if (!isNavLink && !isNavLinkPage) return;
+
+    event.preventDefault();
+
+    const link = event.target.closest("a");
 
     closeMenu();
+
+    setTimeout(() => {
+      if (link) {
+        window.location.href = link.href;
+      }
+    }, 500);
   });
 
   document.addEventListener("keydown", (event) => {
@@ -38,7 +49,10 @@ export default function initBurgerMenu() {
   });
 
   window.addEventListener("resize", () => {
-    if (window.innerWidth >= 769) {
+    if (
+      window.innerWidth >= 769 &&
+      burgerNav.classList.contains("header__burger-nav--active")
+    ) {
       closeMenu();
     }
   });

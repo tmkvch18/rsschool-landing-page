@@ -15,11 +15,41 @@
   --padding-desktop-x: 40px;
   --padding-mobile-x: 16px;
   --border-radius: 40px;
+  --modal-bg: #e1d4c9;
+  --modal-text: #403f3d;
+  --modal-btn-bg: #e1d4c9;
+  --modal-btn-text: #403f3d;
+  --modal-btn-border: #c1b6ad;
+  --modal-btn-label-bg: #c1b6ad;
+  --modal-btn-label-text: #403f3d;
+  --modal-btn-active-bg: #665f55;
+  --modal-btn-active-text: #e1d4c9;
+  --modal-btn-active-label-bg: #e1d4c9;
+  --modal-btn-active-label-text: #403f3d;
+  --modal-btn-bg-hover: #665f55;
+  --modal-btn-text-hover: #e1d4c9;
+  --modal-btn-label-bg-hover: #e1d4c9;
+  --modal-btn-label-text-hover: #403f3d;
 }
 
 :root[data-theme="dark"] {
   --text-dark: #e1d4c9;
   --background-body: #292826;
   --background-container: #665f55;
-  --background-backdrop: rgb(64, 63, 61, 0.8);
+  --background-backdrop: rgba(41, 40, 38, 0.8);
+  --modal-bg: #403f3d;
+  --modal-text: #e1d4c9;
+  --modal-btn-bg: #403f3d;
+  --modal-btn-text: #e1d4c9;
+  --modal-btn-border: #665f55;
+  --modal-btn-label-bg: #665f55;
+  --modal-btn-label-text: #e1d4c9;
+  --modal-btn-active-bg: #292826;
+  --modal-btn-active-text: #e1d4c9;
+  --modal-btn-active-label-bg: #403f3d;
+  --modal-btn-active-label-text: #e1d4c9;
+  --modal-btn-bg-hover: #292826;
+  --modal-btn-text-hover: #e1d4c9;
+  --modal-btn-label-bg-hover: #403f3d;
+  --modal-btn-label-text-hover: #e1d4c9;
 }
