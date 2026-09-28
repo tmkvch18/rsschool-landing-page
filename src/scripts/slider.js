@@ -1,6 +1,7 @@
-const ACTIVE_LINE = "favorites-coffee-section-controls__line_active";
+const ACTIVE_LINE = "favorites-coffee-section-controls__line--active";
 const SLIDE_WIDTH = 480;
 const SLIDE_INTERVAL = 5000;
+const SWIPE_THRESHOLD = 50;
 
 export default function initSlider() {
   const track = document.querySelector(
@@ -10,48 +11,116 @@ export default function initSlider() {
   const btnRight = document.querySelector(
     ".favorites-coffee-slider__btn-right",
   );
-  const lines = document.querySelectorAll(".controls-line");
+  const lines = document.querySelectorAll(
+    ".favorites-coffee-section-controls__line",
+  );
 
   if (!track || !btnLeft || !btnRight || !lines.length) return;
 
-  let position = -SLIDE_WIDTH;
-  let currentLine = 0;
+  let currentSlide = 0;
   let timer = setInterval(autoplay, SLIDE_INTERVAL);
 
-  function moveTrack(step) {
-    if (step > 0) {
-      position = position === SLIDE_WIDTH ? -SLIDE_WIDTH : position + SLIDE_WIDTH;
-    } else {
-      position = position === -SLIDE_WIDTH ? SLIDE_WIDTH : position - SLIDE_WIDTH;
-    }
+  let pointerStartX = 0;
+  let isDragging = false;
 
-    track.style.right = `${position}px`;
+  function updateSlider() {
+    track.style.right = `${(currentSlide - 1) * SLIDE_WIDTH}px`;
+
+    lines.forEach((line, index) => {
+      line.classList.toggle(ACTIVE_LINE, index === currentSlide);
+    });
+
+    restartLineAnimation();
   }
 
-  function switchLine(step) {
-    lines[currentLine].classList.remove(ACTIVE_LINE);
+  function restartLineAnimation() {
+    const activeLine = lines[currentSlide];
 
-    if (step > 0) {
-      currentLine = currentLine === lines.length - 1 ? 0 : currentLine + 1;
-    } else {
-      currentLine = currentLine === 0 ? lines.length - 1 : currentLine - 1;
-    }
-
-    lines[currentLine].classList.add(ACTIVE_LINE);
+    restartAnimation(activeLine);
   }
 
-  function autoplay() {
-    switchLine(1);
-    moveTrack(1);
-  }
-
-  function slide(step) {
+  function goToSlide(index) {
     clearInterval(timer);
-    switchLine(step);
-    moveTrack(step);
+
+    currentSlide = index;
+    updateSlider();
+
     timer = setInterval(autoplay, SLIDE_INTERVAL);
   }
 
-  btnRight.addEventListener("click", () => slide(1));
-  btnLeft.addEventListener("click", () => slide(-1));
+  function nextSlide() {
+    currentSlide = currentSlide === lines.length - 1 ? 0 : currentSlide + 1;
+
+    updateSlider();
+  }
+
+  function prevSlide() {
+    currentSlide = currentSlide === 0 ? lines.length - 1 : currentSlide - 1;
+
+    updateSlider();
+  }
+
+  function autoplay() {
+    nextSlide();
+  }
+
+  function restartAutoplay() {
+    clearInterval(timer);
+    timer = setInterval(autoplay, SLIDE_INTERVAL);
+  }
+
+  function restartAnimation(element) {
+    element.classList.remove(ACTIVE_LINE);
+    element.offsetWidth;
+    element.classList.add(ACTIVE_LINE);
+  }
+
+  btnRight.addEventListener("click", () => {
+    nextSlide();
+    restartAutoplay();
+  });
+
+  btnLeft.addEventListener("click", () => {
+    prevSlide();
+    restartAutoplay();
+  });
+
+  lines.forEach((line, index) => {
+    line.addEventListener("click", () => {
+      goToSlide(index);
+    });
+  });
+
+  track.addEventListener("pointerdown", (event) => {
+    pointerStartX = event.clientX;
+    isDragging = true;
+
+    track.setPointerCapture(event.pointerId);
+  });
+
+  track.addEventListener("pointerup", (event) => {
+    if (!isDragging) return;
+
+    isDragging = false;
+
+    const swipeDistance = pointerStartX - event.clientX;
+
+    if (Math.abs(swipeDistance) < SWIPE_THRESHOLD) return;
+
+    if (swipeDistance > 0) {
+      nextSlide();
+    } else {
+      prevSlide();
+    }
+
+    restartAutoplay();
+  });
+
+  track.addEventListener("pointercancel", () => {
+    isDragging = false;
+  });
+
+  track.addEventListener("dragstart", (event) => {
+    event.preventDefault();
+  });
 }

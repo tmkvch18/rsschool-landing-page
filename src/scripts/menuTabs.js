@@ -1,6 +1,6 @@
 import products from "../json/products.json";
 
-const ACTIVE_TAB = "menu-tabs__item_active";
+const ACTIVE_TAB = "menu-tabs__item--active";
 const HIDDEN_CARD = "menu-cards__card_hidden";
 const MOBILE_BREAKPOINT = 768;
 const CARDS_ON_MOBILE = 4;

@@ -64,7 +64,7 @@
       }
     }
 
-    &_active {
+    &--active {
       display: flex;
       padding: 8px 16px 8px 8px;
       border-radius: 100px;
@@ -84,7 +84,7 @@
     border-radius: 100px;
     background: var(--border-light);
 
-    &_active {
+    &--active {
       background: var(--background-body);
       transition: background 0.4s ease-in-out;
     }

@@ -15,12 +15,12 @@
 }
 
 /* Italic accent inside a title */
-.enjoy-section__title_accent,
-.favorites-coffee-section__title_accent,
-.about__title_accent,
-.mobile-app-content__title_accent,
-.footer-contacts__title_accent,
-.menu__title_accent {
+.enjoy-section__title--accent,
+.favorites-coffee-section__title--accent,
+.about__title--accent,
+.mobile-app-content__title--accent,
+.footer-contacts__title--accent,
+.menu__title--accent {
   color: var(--text-accent);
   font-style: italic;
 }
