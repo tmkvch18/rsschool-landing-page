@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - landing-page
+      - landing-page-part-2
 
   workflow_dispatch:
 

@@ -1,13 +1,13 @@
 import products from "../json/products.json";
 
-const ACTIVE_TAB = "menu-tabs__item_active";
-const HIDDEN_CARD = "menu-cards__card_hidden";
+const ACTIVE_TAB = "menu-tabs__item--active";
+const HIDDEN_CARD = "menu-cards__card--hidden";
 const MOBILE_BREAKPOINT = 768;
 const CARDS_ON_MOBILE = 4;
 
 function createCard({ name, description, price, category }, index) {
   return `
-    <div class="menu-cards-card menu-cards__card">
+    <div class="menu-cards-card menu-cards__card" id="${name}">
       <div class="menu-cards-card__img">
         <img src="./images/${category}-${index + 1}.jpg" alt="${category}">
       </div>
@@ -26,9 +26,13 @@ export default function initMenuTabs() {
 
   if (!cardsContainer || !tabs.length) return;
 
+  const mobileMediaQuery = window.matchMedia(
+    `(max-width: ${MOBILE_BREAKPOINT}px)`,
+  );
+
   function hideExtraCards() {
     const cards = cardsContainer.querySelectorAll(".menu-cards__card");
-    const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+    const isMobile = mobileMediaQuery.matches;
     const hasExtraCards = isMobile && cards.length > CARDS_ON_MOBILE;
 
     cards.forEach((card, index) => {
@@ -42,6 +46,8 @@ export default function initMenuTabs() {
       refreshBtn.style.display = hasExtraCards ? "" : "none";
     }
   }
+
+  mobileMediaQuery.addEventListener("change", hideExtraCards);
 
   function renderCategory(category) {
     cardsContainer.innerHTML = products
