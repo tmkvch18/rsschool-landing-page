@@ -2,6 +2,7 @@ const ACTIVE_LINE = "favorites-coffee-section-controls__line--active";
 const SLIDE_WIDTH = 480;
 const SLIDE_INTERVAL = 5000;
 const SWIPE_THRESHOLD = 50;
+const TRANSITION_FALLBACK = 600;
 
 export default function initSlider() {
   const track = document.querySelector(
@@ -17,47 +18,80 @@ export default function initSlider() {
 
   if (!track || !btnLeft || !btnRight || !lines.length) return;
 
+  const slides = track.children;
+  const slidesCount = slides.length;
+
+  if (!slidesCount) return;
+
+  const firstClone = slides[0].cloneNode(true);
+  const lastClone = slides[slidesCount - 1].cloneNode(true);
+
+  firstClone.setAttribute("aria-hidden", "true");
+  lastClone.setAttribute("aria-hidden", "true");
+
+  track.append(firstClone);
+  track.prepend(lastClone);
+
+  const totalItems = slidesCount + 2;
+
   let currentSlide = 0;
+  let isAnimating = false;
+  let transitionFallback = null;
   let timer = setInterval(autoplay, SLIDE_INTERVAL);
 
   let pointerStartX = 0;
   let isDragging = false;
 
-  function updateSlider() {
-    track.style.right = `${(currentSlide - 1) * SLIDE_WIDTH}px`;
-
-    lines.forEach((line, index) => {
-      line.classList.toggle(ACTIVE_LINE, index === currentSlide);
-    });
-
-    restartLineAnimation();
+  function getRealIndex() {
+    return (currentSlide + slidesCount) % slidesCount;
   }
 
-  function restartLineAnimation() {
-    const activeLine = lines[currentSlide];
+  function setTrackPosition() {
+    const position = currentSlide + 1;
 
-    restartAnimation(activeLine);
+    track.style.right = `${(position - (totalItems - 1) / 2) * SLIDE_WIDTH}px`;
+  }
+
+  function jumpWithoutTransition() {
+    track.style.transition = "none";
+    setTrackPosition();
+    track.offsetWidth;
+    track.style.transition = "";
+  }
+
+  function updateLines() {
+    const realIndex = getRealIndex();
+
+    lines.forEach((line, index) => {
+      line.classList.toggle(ACTIVE_LINE, index === realIndex);
+    });
+
+    restartAnimation(lines[realIndex]);
+  }
+
+  function moveTo(index) {
+    if (isAnimating || index === currentSlide) return;
+
+    isAnimating = true;
+    currentSlide = index;
+
+    setTrackPosition();
+    updateLines();
+
+    transitionFallback = setTimeout(finishTransition, TRANSITION_FALLBACK);
   }
 
   function goToSlide(index) {
-    clearInterval(timer);
-
-    currentSlide = index;
-    updateSlider();
-
-    timer = setInterval(autoplay, SLIDE_INTERVAL);
+    moveTo(index);
+    restartAutoplay();
   }
 
   function nextSlide() {
-    currentSlide = currentSlide === lines.length - 1 ? 0 : currentSlide + 1;
-
-    updateSlider();
+    moveTo(currentSlide + 1);
   }
 
   function prevSlide() {
-    currentSlide = currentSlide === 0 ? lines.length - 1 : currentSlide - 1;
-
-    updateSlider();
+    moveTo(currentSlide - 1);
   }
 
   function autoplay() {
@@ -74,6 +108,30 @@ export default function initSlider() {
     element.offsetWidth;
     element.classList.add(ACTIVE_LINE);
   }
+
+  function handleTransitionEnd(event) {
+    if (event.target !== track || event.propertyName !== "right") return;
+
+    finishTransition();
+  }
+
+  function finishTransition() {
+    if (!isAnimating) return;
+
+    clearTimeout(transitionFallback);
+
+    if (currentSlide < 0 || currentSlide >= slidesCount) {
+      currentSlide = getRealIndex();
+      jumpWithoutTransition();
+    }
+
+    isAnimating = false;
+  }
+
+  jumpWithoutTransition();
+
+  track.addEventListener("transitionend", handleTransitionEnd);
+  track.addEventListener("transitioncancel", handleTransitionEnd);
 
   btnRight.addEventListener("click", () => {
     nextSlide();
